@@ -1,21 +1,146 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essencial - Inicio</title>
+
+    <meta name="description"
+          content="Perfumería Essencial, originales como tú.">
+
+    <title>Essencial | Perfumería</title>
+
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-    
+
+    <!-- ENCABEZADO -->
     <header class="cabecera">
-        <a class="marca" href="index.html">Essencial</a>
-        <nav aria-label="Menú principal">
-            <a href="index.html">Inicio</a>
-            <a href="#catalogo">Catálogo</a>
+
+        <a class="marca" href="index.html">
+            <img src="img/Logo.png"
+                 alt="Logo Perfumería Essencial"
+                 class="logo">
+        </a>
+
+        <nav class="menu" aria-label="Menú principal">
+            <a href="index.html" aria-current="page">Inicio</a>
+            <a href="#categorias">Catálogo</a>
+            <a href="femeninos.html">Femeninos</a>
+            <a href="masculinos.html">Masculinos</a>
+            <a href="unisex.html">Unisex</a>
+            <a href="packs.html">Sets</a>
         </nav>
-        <h1>Perfumeria Essencial</h1>
-        <p>Originales como tú</p>
+
     </header>
+
+    <main>
+
+        <!-- PRESENTACIÓN -->
+        <section class="presentacion">
+
+            <p class="subtitulo">
+                PERFUMERÍA ESSENCIAL
+            </p>
+
+            <h1>Originales como tú</h1>
+
+            <p>
+                Encuentra fragancias únicas para cada
+                personalidad, ocasión y estilo.
+            </p>
+
+            <a href="#categorias" class="boton">
+                Explorar catálogo
+            </a>
+
+        </section>
+
+        <!-- CATEGORÍAS -->
+        <section id="categorias" class="seccion-categorias">
+
+            <h2>Nuestras categorías</h2>
+
+            <div class="contenedor-categorias">
+
+                <article class="tarjeta">
+                    <a href="femeninos.html">
+
+                        <img src="img/femeninos.jpg"
+                             alt="Perfumes femeninos">
+
+                        <h3>Perfumes femeninos</h3>
+
+                        <p>
+                            Fragancias delicadas y elegantes.
+                        </p>
+
+                        <span>Ver productos</span>
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <a href="masculinos.html">
+
+                        <img src="img/masculinos.jpg"
+                             alt="Perfumes masculinos">
+
+                        <h3>Perfumes masculinos</h3>
+
+                        <p>
+                            Aromas intensos y sofisticados.
+                        </p>
+
+                        <span>Ver productos</span>
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <a href="unisex.html">
+
+                        <img src="img/unisex.jpg"
+                             alt="Perfumes unisex">
+
+                        <h3>Perfumes unisex</h3>
+
+                        <p>Aromas sin etiquetas.</p>
+
+                        <span>Ver productos</span>
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <a href="packs.html">
+
+                        <img src="img/packs.jpg"
+                             alt="Sets de perfumes">
+
+                        <h3>Sets de perfumes</h3>
+
+                        <p>
+                            Combinaciones perfectas para ti.
+                        </p>
+
+                        <span>Ver productos</span>
+                    </a>
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="pie-pagina">
+
+        <p>Perfumería Essencial</p>
+
+        <p>Tu originalidad nos importa.</p>
+
+    </footer>
+
 </body>
 </html>

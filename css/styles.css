@@ -1,0 +1,492 @@
+
+/* ========================================
+   PERFUMERÍA ESSENCIAL
+   Hoja de estilos principal
+======================================== */
+
+/* 1. VARIABLES CSS */
+:root {
+    --rojo: #C8102E;
+    --rojo-oscuro: #9F0B23;
+    --negro: #111111;
+    --blanco: #FFFFFF;
+
+    --gris-claro: #F5F5F5;
+    --gris-texto: #666666;
+    --borde: #E5E5E5;
+
+    --radio: 10px;
+    --sombra: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 2. CONFIGURACIÓN GENERAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: var(--negro);
+    background: var(--blanco);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* 3. ENCABEZADO */
+.cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    padding: 15px 7%;
+    background: var(--negro);
+}
+
+/* Logo original */
+.logo {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Menú */
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 22px;
+}
+
+.menu a {
+    color: var(--blanco);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.menu a:hover {
+    color: var(--rojo);
+}
+
+/* 4. PRESENTACIÓN */
+.presentacion {
+    padding: 75px 20px;
+    text-align: center;
+    background: var(--gris-claro);
+
+    /* ANIMACIÓN 1 */
+    animation: aparecer 1.2s ease both;
+}
+
+.presentacion h1 {
+    font-size: 48px;
+    margin: 15px 0;
+}
+
+.presentacion p {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subtitulo {
+    color: var(--rojo);
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+/* Botón principal */
+.boton {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 13px 30px;
+    background: var(--rojo);
+    color: var(--blanco);
+    border-radius: 5px;
+    font-weight: bold;
+
+    /* ANIMACIÓN 2 */
+    animation: subir 1s ease both;
+
+    transition: background 0.3s ease;
+}
+
+.boton:hover {
+    background: var(--rojo-oscuro);
+}
+
+/* 5. CATEGORÍAS */
+.seccion-categorias {
+    padding: 70px 7%;
+    text-align: center;
+}
+
+.seccion-categorias h2 {
+    font-size: 34px;
+    margin-bottom: 40px;
+}
+
+/* Cuatro columnas */
+.contenedor-categorias {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+/* Tarjetas */
+.tarjeta,
+.producto {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* ANIMACIÓN 3 */
+.tarjeta {
+    animation: entradaTarjeta 0.9s ease both;
+}
+
+.tarjeta:hover,
+.producto:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Imágenes */
+.tarjeta img,
+.producto img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+
+    transition: transform 0.4s ease;
+}
+
+.tarjeta:hover img,
+.producto:hover img {
+    transform: scale(1.05);
+}
+
+.tarjeta h3 {
+    margin: 15px 12px 8px;
+    font-size: 20px;
+}
+
+.tarjeta p {
+    margin: 8px 12px;
+    color: var(--gris-texto);
+}
+
+.tarjeta span {
+    display: block;
+    margin: 15px;
+    color: var(--rojo);
+    font-weight: bold;
+}
+
+/* 6. CATÁLOGO DE PRODUCTOS */
+.catalogo {
+    padding: 70px 7%;
+    text-align: center;
+}
+
+.catalogo h1 {
+    font-size: 36px;
+    margin-bottom: 35px;
+}
+
+.contenedor-productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.producto {
+    padding-bottom: 25px;
+}
+
+.producto h2 {
+    margin: 15px;
+    font-size: 21px;
+}
+
+.producto p {
+    margin: 12px;
+}
+
+.precio {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--negro);
+}
+
+/* Productos en oferta */
+.descuento {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--rojo);
+    color: var(--blanco);
+    border-radius: 5px;
+
+    /* ANIMACIÓN 4 */
+    animation: resaltarOferta 2s ease-in-out infinite;
+}
+
+.sin-descuento {
+    color: var(--gris-texto);
+}
+
+.volver {
+    display: inline-block;
+    margin-top: 40px;
+    color: var(--rojo);
+    font-weight: bold;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+/* 7. PIE DE PÁGINA */
+.pie-pagina {
+    padding: 35px 20px;
+    text-align: center;
+    background: var(--negro);
+    color: var(--blanco);
+}
+
+.pie-pagina p {
+    margin: 5px 0;
+}
+
+/* ========================================
+   ANIMACIONES CSS
+======================================== */
+
+/* Animación 1: aparición */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animación 2: entrada desde abajo */
+@keyframes subir {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación 3: entrada de tarjetas */
+@keyframes entradaTarjeta {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación 4: ofertas */
+@keyframes resaltarOferta {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.65;
+    }
+}
+
+/* ========================================
+   RESPONSIVIDAD
+======================================== */
+
+/* TABLETS */
+@media (max-width: 900px) {
+
+    .cabecera {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .contenedor-categorias,
+    .contenedor-productos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .presentacion h1 {
+        font-size: 38px;
+    }
+}
+
+/* CELULARES */
+@media (max-width: 600px) {
+
+    .cabecera {
+        padding: 20px;
+    }
+
+    .logo {
+        width: 120px;
+    }
+
+    .menu {
+        gap: 12px;
+    }
+
+    .menu a {
+        font-size: 14px;
+    }
+
+    .presentacion {
+        padding: 70px 20px;
+    }
+
+    .presentacion h1 {
+        font-size: 30px;
+    }
+
+    .contenedor-categorias,
+    .contenedor-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .seccion-categorias,
+    .catalogo {
+        padding: 45px 20px;
+    }
+
+    .tarjeta img,
+    .producto img {
+        height: 280px;
+    }
+}
+
+/* ACCESIBILIDAD */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+/* Imágenes de las cuatro categorías */
+.tarjeta img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+/* Imágenes de los productos */
+.producto img {
+    width: 100%;
+    height: 260px;
+    object-fit: contain;
+    padding: 15px;
+    background: var(--blanco);
+}
+
+
+/* =====================================
+   MEJORAS GENERALES DEL CATÁLOGO
+===================================== */
+
+/* Asegura el mismo alto de las tarjetas */
+.contenedor-productos {
+    align-items: stretch;
+}
+
+.producto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.producto .precio {
+    margin-top: auto;
+}
+
+/* Mejora de la navegación */
+.menu a {
+    padding: 8px 0;
+}
+
+.menu a[aria-current="page"] {
+    color: var(--rojo);
+    border-bottom: 2px solid var(--rojo);
+}
+
+/* Accesibilidad al navegar con teclado */
+a:focus-visible {
+    outline: 3px solid var(--rojo);
+    outline-offset: 4px;
+}
+
+/* Mejor lectura de las descripciones */
+.producto p:not(.precio) {
+    color: var(--gris-texto);
+    padding: 0 12px;
+}
+
+/* Mejoras para tablet */
+@media (max-width: 900px) {
+    .contenedor-productos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mejoras para celular */
+@media (max-width: 600px) {
+    .contenedor-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .catalogo h1 {
+        font-size: 28px;
+    }
+
+    .producto img {
+        height: 230px;
+    }
+}
+
