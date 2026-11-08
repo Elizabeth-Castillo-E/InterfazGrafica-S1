@@ -91,19 +91,21 @@ function validaNombreUsuario(nombreUsuario) {
 }
 
 function validaNombre(nombre) {
-  const regex = /^[a-zA-Z\s]{2,20}$/;
+  const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]{2,50}$/;
   return regex.test(nombre.trim());
 }
+
 function validaApellido(apellido) {
-  const regex = /^[a-zA-Z\s]{2,20}$/;
+  const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]{2,50}$/;
   return regex.test(apellido.trim());
 }
 function validaEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
   return regex.test(email.trim());
 }
 function validaPassword(password) {
-  const regex = /^(?=.*[A-Z])(?=.*[0-9]).{6,18}$/;
+  const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9\s])\S{6,18}$/;
   return regex.test(password.trim());
 }
 function validaConfirmPassword(password, confirmPassword) {
@@ -111,9 +113,9 @@ function validaConfirmPassword(password, confirmPassword) {
     confirmPassword !== "" &&
     password === confirmPassword;
 }
-function validaDireccion(direccion) {
-  return direccion.trim() !== "";
-}
+//function validaDireccion(direccion) {
+ // return direccion.trim() !== "";
+//}
 function mostrarError(input, mensaje) {
   const errorElement = input.nextElementSibling;
   errorElement.textContent = mensaje;
@@ -140,7 +142,7 @@ formulario.addEventListener("submit", function (event) {
   const emailCorrecto = validaEmail(email);
   const passwordCorrecto = validaPassword(passwordInput.value.trim());
   const confirmPasswordCorrecto = validaConfirmPassword(passwordInput.value.trim(), confirmPasswordInput.value.trim());
-  const direccionCorrecta = validaDireccion(direccionInput.value.trim());
+ // const direccionCorrecta = validaDireccion(direccionInput.value.trim());
   const fechaNacimientoCorrecta = validaFechaNacimiento(fechaNacimientoInput.value.trim());
 
   //bootstrap alert 
@@ -177,8 +179,36 @@ formulario.addEventListener("submit", function (event) {
 
   if (rutCorrecto && nombreUsuarioCorrecto && nombreCorrecto && apellidoCorrecto && emailCorrecto
     && passwordCorrecto && confirmPasswordCorrecto && fechaNacimientoCorrecta) {
-    mensajeRegistro.textContent = "Formulario Correcto, enviando datos..." + nombreUsuario +
-      "el registro se enviará a la base de datos";
+    const registrado = EssencialAuth.registrarCliente({
+    usuario: nombreUsuario,
+    nombre: nombre,
+    apellido: apellido,
+    email: email,
+    direccion: direccionInput.value.trim()
+});
+
+if (registrado) {
+    mensajeRegistro.className = "alert alert-success mt-4";
+    mensajeRegistro.textContent =
+        "Registro de demostración exitoso. " +
+        "Has ingresado como cliente.";
+
+    formulario.reset();
+
+    formulario.querySelectorAll(".is-valid, .is-invalid")
+        .forEach(elemento => {
+            elemento.classList.remove("is-valid", "is-invalid");
+        });
+
+    window.location.href = "index.html";
+} else {
+    nombreUsuarioInput.classList.remove("is-valid");
+    nombreUsuarioInput.classList.add("is-invalid");
+
+    mensajeRegistro.className = "alert alert-danger mt-4";
+    mensajeRegistro.textContent =
+        "Este nombre de usuario ya está registrado.";
+}
   }
   else {
     mensajeRegistro.textContent = "Formulario Incorrecto, por favor revise los campos resaltados e intente nuevamente.";
@@ -191,7 +221,7 @@ formulario.addEventListener("submit", function (event) {
     emailCorrecto,
     passwordCorrecto,
     confirmPasswordCorrecto,
-    direccionCorrecta,
+    //direccionCorrecta,
     fechaNacimientoCorrecta
   });
 });

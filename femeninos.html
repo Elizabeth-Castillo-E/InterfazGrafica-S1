@@ -1,19 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Perfumes Femeninos de Essencial">
+    <meta name="description" content="Perfumes Femeninos de Essencial">
 
     <title>Perfumes Femeninos | Essencial</title>
 
     <!-- CSS compartido con todas las páginas -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
 </head>
 
 <body>
@@ -22,9 +25,7 @@
     <header class="cabecera">
 
         <a class="marca" href="index.html">
-            <img src="img/Logo.png"
-                 alt="Logo Perfumería Essencial"
-                 class="logo">
+            <img src="img/Logo.png" alt="Logo Perfumería Essencial" class="logo">
         </a>
 
         <nav class="menu" aria-label="Menú principal">
@@ -50,94 +51,92 @@
                 fragancias femeninas.
             </p>
 
-            <div class="contenedor-productos">
+            <div id="catalogoDinamico" class="row contenedor-productos" data-categoria="femeninos">
 
                 <!-- PRODUCTO 1 -->
-                <article class="producto">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="producto">
 
-                    <img src="img/productos/femenino-01.jpg"
-                         alt="Fotografía del perfume femenino 1">
+                        <img src="img/productos/femenino-01.jpg" alt="Fotografía del perfume femenino 1">
 
-                    <h2>DKNY Be Delicious Fresh Blossom EDP 100 ML</h2>
+                        <h2>DKNY Be Delicious Fresh Blossom EDP 100 ML</h2>
 
-                    <p>
-                       Este Eau de Parfum posee como notas olfativas de salida las esencias 
-                       de las frutas manzana, damasco, grosella negra, uva y naranja. 
-                       Luego se sienten, como notas de corazón, los aromas de las flores de rosas, 
-                       lirios y jazmín. De fondo se vislumbran las maderas rubias, que le dan mayor 
-                       textura y armonía, además de los acordes de piel suave que le dan un toque de sensualidad.
-                        En conjunto, estos elementos unidos dan lugar a una fragancia con una sutil dulzura 
-                        y una gran frescura.
-                    </p>
+                        <p>
+                            Este Eau de Parfum posee como notas olfativas de salida las esencias
+                            de las frutas manzana, damasco, grosella negra, uva y naranja.
+                            Luego se sienten, como notas de corazón, los aromas de las flores de rosas,
+                            lirios y jazmín. De fondo se vislumbran las maderas rubias, que le dan mayor
+                            textura y armonía, además de los acordes de piel suave que le dan un toque de sensualidad.
+                            En conjunto, estos elementos unidos dan lugar a una fragancia con una sutil dulzura
+                            y una gran frescura.
+                        </p>
 
-                    <p class="precio">
-                        $59.992
-                    </p>
+                        <p class="precio">
+                            $59.992
+                        </p>
 
-                    <span class="sin-descuento">
-                        20% de descuento
-                    </span>
+                        <span class="descuento">
+                            20% de descuento
+                        </span>
 
-                </article>
-
+                    </article>
+                </div>
                 <!-- PRODUCTO 2 -->
-                <article class="producto">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="producto">
 
-                    <img src="img/productos/femenino-02.jpg"
-                         alt="Fotografía del perfume femenino 2">
+                        <img src="img/productos/femenino-02.jpg" alt="Fotografía del perfume femenino 2">
 
-                    <h2>LA VIE EST BELLE PARFUM 100ML</h2>
+                        <h2>LA VIE EST BELLE PARFUM 100ML</h2>
 
-                    <p>
-                       
+                        <p>
 
-Comparte tu felicidad con esta majestuosa reinterpretación de una fragancia que 
-captura la luminosidad de la esencia de magnolia. Notas Transversales: Iris, Finas delicias
 
-Notas Altas: Pera, Zarzamora
-Notas de Corazón: Iris Pallida, Flor de naranjo and Jazmín Sambac
-Notas Base: Esencia de Corazón de Pachuli
+                            Comparte tu felicidad con esta majestuosa reinterpretación de una fragancia que
+                            captura la luminosidad de la esencia de magnolia. Notas Transversales: Iris, Finas delicias
 
-                    </p>
+                            Notas Altas: Pera, Zarzamora
+                            Notas de Corazón: Iris Pallida, Flor de naranjo and Jazmín Sambac
+                            Notas Base: Esencia de Corazón de Pachuli
 
-                    <p class="precio">
-                        $137.752
-                    </p>
+                        </p>
 
-                    <span class="sin-descuento">
-                        
-                    </span>
+                        <p class="precio">
+                            $137.752
+                        </p>
 
-                </article>
+
+                    </article>
+                </div>
 
                 <!-- PRODUCTO 3 -->
-                <article class="producto">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="producto">
 
-                    <img src="img/productos/femenino-03.jpg"
-                         alt="Femme Boss 75 ml">
+                        <img src="img/productos/femenino-03.jpg" alt="Femme Boss 75 ml">
 
-                    <h2>Femme Boss 75 ml</h2>
+                        <h2>Femme Boss 75 ml</h2>
 
-                    <p>
-                        Boss Femme de Hugo Boss es un “Eau de Parfum” para mujer con 
-                        un aire Floral y Frutal. Su delicada estela, inicia con suaves notas frutales, 
-                        aromas sensibles y delicados, creados por la combinación de grosellas negras, 
-                        fresia y naranja tangerina. Seguidamente, se abre paso un hermoso bouquet floral, 
-                        protagonizado por tres flores blancos, repletas de suavidad y ternura, éstas son azucena,
-                         rosa de Bulgaria y jazmín. Para finalizar, observamos un despliegue de chabacano, 
-                         ámbar y limonero, creando así un fondo radiante y lleno de personalidad.
-                    </p>
+                        <p>
+                            Boss Femme de Hugo Boss es un “Eau de Parfum” para mujer con
+                            un aire Floral y Frutal. Su delicada estela, inicia con suaves notas frutales,
+                            aromas sensibles y delicados, creados por la combinación de grosellas negras,
+                            fresia y naranja tangerina. Seguidamente, se abre paso un hermoso bouquet floral,
+                            protagonizado por tres flores blancos, repletas de suavidad y ternura, éstas son azucena,
+                            rosa de Bulgaria y jazmín. Para finalizar, observamos un despliegue de chabacano,
+                            ámbar y limonero, creando así un fondo radiante y lleno de personalidad.
+                        </p>
 
-                    <p class="precio">
-                        $92.990
-                    </p>
+                        <p class="precio">
+                            $92.990
+                        </p>
 
-                    <span class="sin-descuento">
-                        20% de descuento
-                    </span>
+                        <span class="descuento">
+                            20% de descuento
+                        </span>
 
-                </article>
-
+                    </article>
+                </div>
             </div>
 
             <a class="volver" href="index.html">
@@ -153,6 +152,9 @@ Notas Base: Esencia de Corazón de Pachuli
         <p>Perfumería Essencial</p>
         <p>Tu originalidad nos importa.</p>
     </footer>
-
+    <script src="js/datos.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/catalogo.js"></script>
 </body>
+
 </html>

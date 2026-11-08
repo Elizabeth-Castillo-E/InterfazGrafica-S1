@@ -4,7 +4,10 @@
    Hoja de estilos principal
 ======================================== */
 
-/* 1. VARIABLES CSS */
+/* ========================================
+   1. VARIABLES CSS
+======================================== */
+
 :root {
     --rojo: #C8102E;
     --rojo-oscuro: #9F0B23;
@@ -152,6 +155,7 @@ img {
 /* Cambio de color del botón */
 .boton:hover {
     background: var(--rojo-oscuro);
+    color: var(--blanco);
 }
 
 /* ========================================
@@ -168,11 +172,13 @@ img {
     margin-bottom: 40px;
 }
 
-/* Distribución en cuatro columnas */
+/* Distribución mediante Bootstrap Grid */
 .contenedor-categorias {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    row-gap: 25px;
+}
+
+.contenedor-categorias .tarjeta {
+    height: 100%;
 }
 
 /* Estilo compartido de las tarjetas */
@@ -250,12 +256,21 @@ img {
     margin-bottom: 35px;
 }
 
-/* Distribución en tres columnas */
+/* Distribución de productos con Bootstrap */
 .contenedor-productos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    row-gap: 25px;
     align-items: stretch;
+}
+
+/* Columnas del catálogo */
+.contenedor-productos > div {
+    display: flex;
+}
+
+/* Tarjetas de igual tamaño */
+.contenedor-productos .producto {
+    width: 100%;
+    height: 100%;
 }
 
 /* Tarjetas de perfumes */
@@ -267,7 +282,6 @@ img {
 }
 
 /* Imágenes de perfumes */
-
 .producto img {
     width: 90%;
     height: 260px;
@@ -278,13 +292,14 @@ img {
     display: block;
     transition: transform 0.4s ease;
 }
+
 /* Nombre del perfume */
 .producto h2 {
     margin: 15px;
     font-size: 21px;
 }
 
-/* Descripciones */
+/* Párrafos de productos */
 .producto p {
     margin: 12px;
 }
@@ -302,7 +317,7 @@ img {
     color: var(--negro);
 }
 
-/* Alinea los precios al final */
+/* Alinear precios al final */
 .producto .precio {
     margin-top: auto;
 }
@@ -326,7 +341,7 @@ img {
     margin-bottom: 20px;
 }
 
-/* Enlace para volver al inicio */
+/* Enlace volver al inicio */
 .volver {
     display: inline-block;
     margin-top: 40px;
@@ -405,29 +420,30 @@ img {
     }
 }
 
-/* Descripción detallada de los perfumes */
+/* ========================================
+   9. DESCRIPCIÓN DETALLADA
+======================================== */
+
 .descripcion-producto {
     text-align: left;
     padding: 0 20px;
 }
 
-/* Separación del párrafo */
 .descripcion-producto p {
     margin-bottom: 20px;
 }
 
-/* Lista de notas aromáticas */
 .descripcion-producto ul {
     padding-left: 25px;
     margin-bottom: 20px;
 }
 
-/* Espacio entre cada nota */
 .descripcion-producto li {
     margin-bottom: 15px;
 }
+
 /* ========================================
-   9. RESPONSIVIDAD
+   10. RESPONSIVIDAD
 ======================================== */
 
 /* TABLETS: pantallas de hasta 900px */
@@ -436,11 +452,6 @@ img {
     .cabecera {
         flex-direction: column;
         gap: 15px;
-    }
-
-    .contenedor-categorias,
-    .contenedor-productos {
-        grid-template-columns: repeat(2, 1fr);
     }
 
     .presentacion h1 {
@@ -484,11 +495,6 @@ img {
         font-size: 18px;
     }
 
-    .contenedor-categorias,
-    .contenedor-productos {
-        grid-template-columns: 1fr;
-    }
-
     .seccion-categorias,
     .catalogo {
         padding: 45px 20px;
@@ -504,7 +510,7 @@ img {
 }
 
 /* ========================================
-   10. ACCESIBILIDAD
+   11. ACCESIBILIDAD
 ======================================== */
 
 /* Reduce animaciones si el usuario lo solicita */

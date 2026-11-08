@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Iniciar sesión | Perfumería Essencial</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous">
+
+    <!-- CSS de la perfumería -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+    <header class="cabecera">
+
+        <a class="marca" href="index.html">
+            <img src="img/Logo.png"
+                alt="Logo Perfumería Essencial"
+                class="logo">
+        </a>
+
+        <nav class="menu" aria-label="Menú principal">
+            <a href="index.html">Inicio</a>
+            <a href="femeninos.html">Femeninos</a>
+            <a href="masculinos.html">Masculinos</a>
+            <a href="unisex.html">Unisex</a>
+            <a href="packs.html">Sets</a>
+            
+            <a href="registroUsuario.html">Registro de usuarios</a>
+            <a href="login.html" aria-current="page">Iniciar sesión</a>
+        </nav>
+
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container py-5">
+
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-md-8 col-lg-5">
+
+                <h1 class="text-center mb-4">
+                    Iniciar sesión
+                </h1>
+
+                <form id="formLogin" novalidate>
+
+                    <!-- USUARIO -->
+                    <div class="mb-3">
+
+                        <label for="usuarioLogin" class="form-label">
+                            Nombre de usuario
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="usuarioLogin"
+                            name="usuarioLogin"
+                            autocomplete="username"
+                            required>
+
+                        <div class="invalid-feedback">
+                            Ingrese su nombre de usuario.
+                        </div>
+
+                    </div>
+
+                    <!-- CONTRASEÑA -->
+                    <div class="mb-3">
+
+                        <label for="passwordLogin" class="form-label">
+                            Contraseña
+                        </label>
+
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="passwordLogin"
+                            name="passwordLogin"
+                            autocomplete="current-password"
+                            required>
+
+                        <div class="invalid-feedback">
+                            Ingrese su contraseña.
+                        </div>
+
+                    </div>
+
+                    <!-- BOTÓN -->
+                    <div class="d-grid">
+
+                        <button type="submit" class="boton border-0">
+                            Ingresar
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <!-- MENSAJE DE VALIDACIÓN -->
+                <div id="mensajeLogin"
+                    class="d-none mt-3"
+                    role="status"
+                    aria-live="polite">
+                </div>
+
+                <!-- ENLACES -->
+                <div class="text-center mt-4">
+
+                    <p>
+                        <a href="recuperarPassword.html" class="volver">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </p>
+
+                    <p>
+                        ¿No tienes cuenta?
+                        <a href="registroUsuario.html" class="volver">
+                            Regístrate aquí
+                        </a>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="pie-pagina">
+        <p>Perfumería Essencial</p>
+        <p>Tu originalidad nos importa.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+    </script>
+    <script src="js/auth.js"></script>
+<script src="js/login.js"></script>
+
+    
+</body>
+</html>

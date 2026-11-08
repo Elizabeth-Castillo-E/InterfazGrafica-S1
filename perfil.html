@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil | Essencial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="cabecera">
+    <a href="index.html" class="marca">
+        <img src="img/Logo.png" alt="Logo Essencial" class="logo">
+    </a>
+    <nav class="menu" aria-label="Menú principal">
+         <a href="index.html">Inicio</a>
+    <a href="index.html#categorias">Catálogo</a>
+    <a href="femeninos.html">Femeninos</a>
+    <a href="masculinos.html">Masculinos</a>
+    <a href="unisex.html">Unisex</a>
+    <a href="packs.html">Sets</a>
+    
+    </nav>
+</header>
+
+<main class="container py-5" id="contenidoPerfil" hidden>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <h1>Modificar mi perfil</h1>
+            <p>Actualiza tus datos de demostración.</p>
+
+            <form id="formPerfil" novalidate>
+                <div class="mb-3">
+                    <label for="perfilUsuario" class="form-label">
+                        Nombre de usuario
+                    </label>
+                    <input id="perfilUsuario" class="form-control"
+                           readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="perfilNombre" class="form-label">
+                        Nombre
+                    </label>
+                    <input id="perfilNombre" class="form-control"
+                           required minlength="2" maxlength="50">
+                </div>
+
+                <div class="mb-3">
+                    <label for="perfilApellido" class="form-label">
+                        Apellido
+                    </label>
+                    <input id="perfilApellido" class="form-control"
+                           required minlength="2" maxlength="50">
+                </div>
+
+                <div class="mb-3">
+                    <label for="perfilEmail" class="form-label">
+                        Correo electrónico
+                    </label>
+                    <input type="email" id="perfilEmail"
+                           class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="perfilDireccion" class="form-label">
+                        Dirección (opcional)
+                    </label>
+                    <input id="perfilDireccion" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-danger">
+                    Guardar cambios
+                </button>
+            </form>
+
+            <div id="mensajePerfil" role="status"
+                 aria-live="polite" class="mt-3"></div>
+        </div>
+    </div>
+</main>
+
+<footer class="pie-pagina">
+    <p>Perfumería Essencial</p>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/perfil.js"></script>
+</body>
+</html>

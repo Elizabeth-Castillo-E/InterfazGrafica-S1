@@ -13,7 +13,15 @@
     <title>Perfumes Masculinos | Essencial</title>
 
     <!-- CSS compartido con todas las páginas -->
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+    crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+        crossorigin="anonymous">
+    </script>
 </head>
 
 <body>
@@ -50,9 +58,10 @@
                 fragancias masculinas.
             </p>
 
-            <div class="contenedor-productos">
+            <div id="catalogoDinamico" class="row contenedor-productos" data-categoria="masculinos">
 
                 <!-- PRODUCTO 1 -->
+                 <div class="col-12 col-md-6 col-lg-4">
                 <article class="producto">
 
                     <img src="img/productos/masculino-01.jpg"
@@ -83,8 +92,9 @@
                     </span>
 
                 </article>
-
+                 </div>
                 <!-- PRODUCTO 2 -->
+                 <div class="col-12 col-md-6 col-lg-4">
                 <article class="producto">
 
                     <img src="img/productos/masculino-02.jpg"
@@ -103,13 +113,14 @@
                          $162.990
                     </p>
 
-                    <span class="sin-descuento">
+                    <span class="descuento">
                         10% de descuento
                     </span>
 
                 </article>
-
+                 </div>
                 <!-- PRODUCTO 3 -->
+                 <div class="col-12 col-md-6 col-lg-4">
                 <article class="producto">
 
                     <img src="img/productos/masculino-03.jpg"
@@ -136,7 +147,7 @@
                     </span>
 
                 </article>
-
+                 </div>
             </div>
 
             <a class="volver" href="index.html">
@@ -152,7 +163,9 @@
         <p>Perfumería Essencial</p>
         <p>Tu originalidad nos importa.</p>
     </footer>
-
+<script src="js/datos.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/catalogo.js"></script>
 </body>
 </html>
 
