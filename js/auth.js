@@ -1,11 +1,14 @@
 
-/* AUTENTICACIÓN SIMULADA
-*/
+/* Módulo de autenticación: cuentas demo y locales, perfiles, sesión y menú.
+ * Depende del almacenamiento del navegador; no realiza peticiones a un servidor.
+ * Las credenciales locales pertenecen únicamente a esta demostración frontend.
+ */
 
 const EssencialAuth = (() => {
 
     const CLAVE_SESION = "essencial_sesion";
     const CLAVE_PERFILES = "essencial_perfiles";
+    const CLAVE_CUENTAS = "essencial_cuentas";
 
     const usuariosDemo = [
         {
@@ -34,6 +37,7 @@ const EssencialAuth = (() => {
         }
     }
 
+    // Guarda el perfil activo y su rol en la sesión de la pestaña.
     function guardarSesion(usuario) {
         const sesion = {
             usuario: usuario.usuario,
@@ -50,14 +54,27 @@ const EssencialAuth = (() => {
         return sesion;
     }
 
+    // Lee las credenciales locales por separado para no incluirlas en los perfiles.
+    function obtenerCuentas() {
+        try {
+            const cuentas = JSON.parse(localStorage.getItem(CLAVE_CUENTAS));
+            return Array.isArray(cuentas) ? cuentas : [];
+        } catch {
+            return [];
+        }
+    }
+
+    // Comprueba cuentas demo y creadas, y recupera el perfil actualizado.
     function iniciarSesion(usuario, password) {
-        const encontrado = usuariosDemo.find(
-            u => u.usuario === usuario && u.password === password
+        const encontrado = [...usuariosDemo, ...obtenerCuentas()].find(
+            u => u.usuario.toLowerCase() === usuario.trim().toLowerCase()
+                && u.password === password
         );
 
         if (!encontrado) return null;
 
-        return guardarSesion(encontrado);
+        const perfil = obtenerUsuarios().find(p => p.usuario === encontrado.usuario);
+        return guardarSesion({ ...encontrado, ...perfil, rol: encontrado.rol });
     }
 
     function cerrarSesion() {
@@ -65,6 +82,7 @@ const EssencialAuth = (() => {
         window.location.href = "index.html";
     }
 
+    // Redirige a inicio de sesión o a portada según la sesión y el rol.
     function exigirRol(rol) {
         const sesion = obtenerSesion();
 
@@ -100,6 +118,22 @@ const EssencialAuth = (() => {
         }
     }
 
+    // Combina las cuentas de demostración y los perfiles locales para el panel.
+    function obtenerUsuarios() {
+        const perfiles = obtenerPerfiles();
+        const cuentas = usuariosDemo.map(({ usuario, nombre, email, rol }) => ({
+            usuario,
+            nombre,
+            email,
+            ...perfiles.find(perfil => perfil.usuario === usuario),
+            rol
+        }));
+        return cuentas.concat(perfiles.filter(
+            perfil => !cuentas.some(cuenta => cuenta.usuario === perfil.usuario)
+        ));
+    }
+
+    // Actualiza el perfil local y sincroniza el nombre y el correo de la sesión activa.
     function guardarPerfil(perfil) {
         const perfiles = obtenerPerfiles();
         const indice = perfiles.findIndex(
@@ -107,7 +141,7 @@ const EssencialAuth = (() => {
         );
 
         if (indice >= 0) {
-            perfiles[indice] = perfil;
+            perfiles[indice] = { ...perfiles[indice], ...perfil };
         } else {
             perfiles.push(perfil);
         }
@@ -128,32 +162,66 @@ const EssencialAuth = (() => {
         }
     }
 
-    function registrarCliente(datos) {
+    // Comparte las reglas del alta pública y del panel; no cambia la sesión activa.
+    function crearCuenta(datos, rol) {
+        const usuario = (datos.usuario || "").trim();
+        const nombre = (datos.nombre || "").trim();
+        const email = (datos.email || "").trim();
+        const password = datos.password || "";
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(usuario) ||
+            !/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]{2,50}$/.test(nombre) ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+            !/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9\s])\S{6,18}$/.test(password) ||
+            !["CLIENTE", "ADMINISTRADOR"].includes(rol)) {
+            return { ok: false, mensaje: "Revise usuario, nombre, correo, contraseña y rol." };
+        }
         const existe = usuariosDemo.some(
             u => u.usuario.toLowerCase() ===
-                datos.usuario.toLowerCase()
+                usuario.toLowerCase()
         ) || obtenerPerfiles().some(
             p => p.usuario.toLowerCase() ===
-                datos.usuario.toLowerCase()
+                usuario.toLowerCase()
+        ) || obtenerCuentas().some(
+            cuenta => cuenta.usuario.toLowerCase() === usuario.toLowerCase()
         );
 
-        if (existe) return false;
+        if (existe) return { ok: false, mensaje: "Este nombre de usuario ya está registrado." };
 
         const perfil = {
-            usuario: datos.usuario,
-            nombre: datos.nombre,
-            apellido: datos.apellido,
-            email: datos.email,
+            usuario,
+            nombre,
+            apellido: datos.apellido || "",
+            email,
             direccion: datos.direccion || "",
-            rol: "CLIENTE"
+            rol
         };
 
         guardarPerfil(perfil);
-        guardarSesion(perfil);
+        // En esta simulación la contraseña se conserva localmente en texto plano.
+        localStorage.setItem(CLAVE_CUENTAS, JSON.stringify([
+            ...obtenerCuentas(), { usuario, password, rol }
+        ]));
+        return { ok: true, perfil };
+    }
+
+    // El administrador crea cuentas sin perder su propia sesión.
+    function crearUsuario(datos) {
+        if (obtenerSesion()?.rol !== "ADMINISTRADOR") {
+            return { ok: false, mensaje: "Solo el administrador puede crear usuarios." };
+        }
+        return crearCuenta(datos, datos.rol);
+    }
+
+    // El registro público siempre crea clientes e inicia la nueva sesión.
+    function registrarCliente(datos) {
+        const resultado = crearCuenta(datos, "CLIENTE");
+        if (!resultado.ok) return false;
+        guardarSesion(resultado.perfil);
         return true;
     }
 
     
+// Reconstruye los enlaces de sesión según el rol y marca la página actual.
 function actualizarSesionMenu() {
     const menu = document.querySelector(".menu");
 
@@ -172,7 +240,8 @@ function actualizarSesionMenu() {
         "registroUsuario.html",
         "admin.html",
         "perfil.html",
-        "carrito.html"
+        "carrito.html",
+        "compras.html"
     ].forEach(ruta => {
         menu.querySelectorAll(`a[href="${ruta}"]`).forEach(
             enlace => enlace.remove()
@@ -199,6 +268,7 @@ function actualizarSesionMenu() {
 
         if (sesion.rol === "CLIENTE") {
             agregarEnlace("Mi carrito", "carrito.html");
+            agregarEnlace("Mis compras", "compras.html");
         }
 
         agregarEnlace("Mi perfil", "perfil.html");
@@ -248,7 +318,9 @@ function actualizarSesionMenu() {
         exigirRol,
         exigirSesion,
         obtenerPerfiles,
+        obtenerUsuarios,
         guardarPerfil,
+        crearUsuario,
         registrarCliente
     };
 })();

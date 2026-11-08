@@ -1,5 +1,8 @@
 
-/* ADMINISTRACIÓN SIMULADA */
+/* Módulo de administración: productos, imágenes, stock y creación/edición de usuarios.
+ * Depende de EssencialAuth y EssencialDatos; solo muestra el panel al administrador.
+ * Los formularios validan datos, actualizan el almacenamiento local y refrescan tablas.
+ */
 
 if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
     document.getElementById("contenidoAdmin").hidden = false;
@@ -11,6 +14,7 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
     const vistaPrevia = document.getElementById("vistaPreviaImagen");
     const errorImagen = document.getElementById("errorImagen");
 
+    // Valida el tipo y tamaño de la imagen antes de mostrar la vista previa.
     archivoImagen.addEventListener("change", function () {
         const archivo = this.files[0];
 
@@ -82,6 +86,7 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
         }).format(valor);
     }
 
+    // Actualiza la tabla de productos con sus acciones de edición y eliminación.
     function mostrarProductos() {
         tabla.replaceChildren();
 
@@ -95,8 +100,18 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
             precio.textContent = precioCLP(producto.precio);
 
             const stock = document.createElement("td");
-            stock.textContent = Object.values(producto.stock)
-                .reduce((total, n) => total + n, 0);
+            const existencias = document.createElement("ul");
+            existencias.className = "list-unstyled mb-0";
+            [
+                ["Chillán", producto.stock.chillan],
+                ["Concepción", producto.stock.concepcion],
+                ["Santiago", producto.stock.santiago]
+            ].forEach(([sucursal, cantidad]) => {
+                const linea = document.createElement("li");
+                linea.textContent = `${sucursal}: ${cantidad}`;
+                existencias.appendChild(linea);
+            });
+            stock.appendChild(existencias);
 
             const acciones = document.createElement("td");
 
@@ -122,6 +137,7 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
         });
     }
 
+    // Carga en el formulario los datos y la imagen del producto elegido.
     function editarProducto(id) {
         const p = EssencialDatos.buscarProducto(id);
         if (!p) return;
@@ -147,6 +163,7 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
         formulario.scrollIntoView({ behavior: "smooth" });
     }
 
+    // Valida los campos y el código único del producto antes de guardar.
     formulario.addEventListener("submit", event => {
         event.preventDefault();
 
@@ -216,6 +233,7 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
         mostrarMensaje("Producto guardado correctamente.");
     });
 
+    // Limpia la imagen seleccionada, la vista previa y las marcas de validación.
     formulario.addEventListener("reset", () => {
         archivoImagen.value = "";
         imagenProducto.value = "";
@@ -228,30 +246,98 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
             .forEach(el => el.classList.remove("is-valid", "is-invalid"));
     });
 
+    const tablaUsuarios = campo("tablaUsuarios");
+    const formUsuario = campo("formUsuarioAdmin");
+    const nombreUsuario = campo("nombreUsuarioAdmin");
+    const correoUsuario = campo("correoUsuarioAdmin");
+    const mensajeUsuario = campo("mensajeUsuarioAdmin");
+    let usuarioEnEdicion = null;
+
+    // Alterna alta/edición y deshabilita los campos que no corresponden al modo.
+    function abrirFormularioUsuario(perfil = null) {
+        formUsuario.reset();
+        usuarioEnEdicion = perfil?.usuario || null;
+        const creando = !perfil;
+        campo("camposAltaUsuario").hidden = !creando;
+        ["cuentaUsuarioAdmin", "passwordUsuarioAdmin", "rolUsuarioAdmin"].forEach(id => {
+            campo(id).disabled = !creando;
+        });
+        campo("tituloUsuarioAdmin").textContent = creando ? "Crear usuario" : `Editar perfil de ${perfil.usuario}`;
+        campo("guardarUsuarioAdmin").textContent = creando ? "Crear usuario" : "Guardar perfil";
+        nombreUsuario.value = perfil?.nombre || "";
+        correoUsuario.value = perfil?.email || "";
+        mensajeUsuario.textContent = "";
+        formUsuario.hidden = false;
+        (creando ? campo("cuentaUsuarioAdmin") : nombreUsuario).focus();
+    }
+
+    campo("nuevoUsuarioAdmin").addEventListener("click", () => abrirFormularioUsuario());
+
+    // Muestra las cuentas y permite abrir el formulario de edición de perfil.
     function mostrarUsuarios() {
-        const tablaUsuarios = document.getElementById("tablaUsuarios");
         tablaUsuarios.replaceChildren();
+        EssencialAuth.obtenerUsuarios().forEach(perfil => {
+            const fila = tablaUsuarios.insertRow();
+            fila.insertCell().textContent = perfil.usuario;
+            fila.insertCell().textContent = [perfil.nombre, perfil.apellido].filter(Boolean).join(" ") || "—";
+            fila.insertCell().textContent = perfil.email || "—";
+            fila.insertCell().textContent = perfil.rol;
 
-        const usuarios = [
-            { usuario: "admin", rol: "ADMINISTRADOR" },
-            { usuario: "cliente", rol: "CLIENTE" },
-            ...EssencialAuth.obtenerPerfiles().map(p => ({
-                usuario: p.usuario,
-                rol: "CLIENTE"
-            }))
-        ];
-
-        usuarios.forEach(u => {
-            const fila = document.createElement("tr");
-            const nombre = document.createElement("td");
-            const rol = document.createElement("td");
-
-            nombre.textContent = u.usuario;
-            rol.textContent = u.rol;
-            fila.append(nombre, rol);
-            tablaUsuarios.appendChild(fila);
+            const editar = document.createElement("button");
+            editar.type = "button";
+            editar.className = "btn btn-sm btn-outline-primary";
+            editar.textContent = "Editar";
+            editar.setAttribute("aria-label", `Editar perfil de ${perfil.usuario}`);
+            editar.addEventListener("click", () => {
+                abrirFormularioUsuario(perfil);
+            });
+            fila.insertCell().appendChild(editar);
         });
     }
+
+    campo("cancelarUsuarioAdmin").addEventListener("click", () => {
+        formUsuario.hidden = true;
+        formUsuario.reset();
+        usuarioEnEdicion = null;
+    });
+
+    // Crea una cuenta o edita el contacto conservando la identidad y el rol existentes.
+    formUsuario.addEventListener("submit", event => {
+        event.preventDefault();
+        nombreUsuario.value = nombreUsuario.value.trim();
+        correoUsuario.value = correoUsuario.value.trim();
+        if (!formUsuario.reportValidity()) return;
+
+        const creando = usuarioEnEdicion === null;
+        if (creando) {
+            const resultado = EssencialAuth.crearUsuario({
+                usuario: campo("cuentaUsuarioAdmin").value.trim(),
+                password: campo("passwordUsuarioAdmin").value,
+                rol: campo("rolUsuarioAdmin").value,
+                nombre: nombreUsuario.value,
+                email: correoUsuario.value
+            });
+            if (!resultado.ok) {
+                mensajeUsuario.textContent = resultado.mensaje;
+                return;
+            }
+        } else {
+            const perfil = EssencialAuth.obtenerUsuarios().find(
+                usuario => usuario.usuario === usuarioEnEdicion
+            );
+            if (!perfil) return;
+            EssencialAuth.guardarPerfil({
+                ...perfil,
+                nombre: nombreUsuario.value,
+                email: correoUsuario.value
+            });
+        }
+        formUsuario.hidden = true;
+        formUsuario.reset();
+        usuarioEnEdicion = null;
+        mostrarUsuarios();
+        mensajeUsuario.textContent = creando ? "Usuario creado correctamente." : "Perfil actualizado correctamente.";
+    });
 
     mostrarProductos();
     mostrarUsuarios();

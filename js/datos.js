@@ -1,9 +1,14 @@
+/* Módulo de Datos simulados: expone EssencialDatos para catálogo, administración, carrito e historial.
+ * Inicializa productos, calcula descuentos, gestiona productos y stock por sucursal y conserva pedidos.
+ * Usa localStorage para mantener cambios entre recargas, sin servidor.
+ */
 
 /* DATOS SIMULADOS - PERFUMERÍA ESSENCIAL
 */
 
 const EssencialDatos = (() => {
     const CLAVE = "essencial_productos";
+    const CLAVE_PEDIDOS = "essencial_pedidos";
 
     const productosIniciales = [
         {
@@ -40,18 +45,21 @@ const EssencialDatos = (() => {
             stock: { chillan: 6, concepcion: 2, santiago: 4 }
         }
     ];
+// Aplica el porcentaje de descuento y redondea el precio a pesos chilenos.
 function calcularPrecioFinal(producto) {
     return Math.round(
         producto.precio *
         (1 - producto.descuento / 100)
     );
 }
+    // Carga el catálogo de demostración al usar la aplicación por primera vez.
     function iniciar() {
         if (localStorage.getItem(CLAVE) === null) {
             guardar(productosIniciales);
         }
     }
 
+    // Recupera el catálogo guardado en el navegador.
     function obtenerProductos() {
         try {
             return JSON.parse(localStorage.getItem(CLAVE)) || [];
@@ -68,6 +76,7 @@ function calcularPrecioFinal(producto) {
         return obtenerProductos().find(p => p.id === Number(id));
     }
 
+    // Actualiza el producto por su ID o asigna un ID al crear uno nuevo.
     function guardarProducto(producto) {
         const productos = obtenerProductos();
 
@@ -95,6 +104,7 @@ function calcularPrecioFinal(producto) {
         guardar(productos);
     }
 
+    // Valida la sucursal y guarda su nueva cantidad de unidades.
     function actualizarStock(id, sucursal, cantidad) {
         const producto = buscarProducto(id);
 
@@ -110,6 +120,23 @@ function calcularPrecioFinal(producto) {
         return true;
     }
 
+    // Lee los pedidos simulados guardados en el navegador.
+    function obtenerPedidos() {
+        try {
+            const pedidos = JSON.parse(localStorage.getItem(CLAVE_PEDIDOS));
+            return Array.isArray(pedidos) ? pedidos : [];
+        } catch {
+            return [];
+        }
+    }
+
+    // Añade el pedido simulado al historial conservando los pedidos anteriores.
+    function guardarPedido(pedido) {
+        const pedidos = obtenerPedidos();
+        pedidos.push(pedido);
+        localStorage.setItem(CLAVE_PEDIDOS, JSON.stringify(pedidos));
+    }
+
     iniciar();
 
     return {
@@ -118,6 +145,8 @@ function calcularPrecioFinal(producto) {
         guardarProducto,
         eliminarProducto,
         actualizarStock,
-        calcularPrecioFinal
+        calcularPrecioFinal,
+        obtenerPedidos,
+        guardarPedido
     };
 })();

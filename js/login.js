@@ -1,9 +1,13 @@
+/* Módulo de Ingreso: captura credenciales, marca campos vacíos y delega la comprobación a EssencialAuth.
+ * Muestra errores y redirige al panel si es administrador o al inicio si es cliente.
+ */
 
 const formLogin = document.getElementById("formLogin");
 const usuarioLogin = document.getElementById("usuarioLogin");
 const passwordLogin = document.getElementById("passwordLogin");
 const mensajeLogin = document.getElementById("mensajeLogin");
 
+// Valida los campos y abre la pantalla correspondiente al rol de la sesión.
 formLogin.addEventListener("submit", function (event) {
     event.preventDefault();
 

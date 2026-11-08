@@ -1,6 +1,10 @@
+/* Módulo de Recuperación simulada: valida el correo con las reglas del input y muestra el resultado.
+ * No envía correo ni modifica las credenciales.
+ */
 
 const formularioRecuperar = document.getElementById("formRecuperar");
 
+// Comprueba el formato del correo y confirma la solicitud de demostración.
 formularioRecuperar.addEventListener("submit", event => {
     event.preventDefault();
 

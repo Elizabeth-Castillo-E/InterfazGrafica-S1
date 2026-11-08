@@ -1,4 +1,9 @@
+/* Módulo de Perfil: exige sesión y carga los datos locales de la cuenta activa.
+ * Valida nombre, apellido y correo y guarda mediante EssencialAuth, sincronizando la sesión.
+ * Conserva usuario, rol y credenciales.
+ */
 
+// Carga los datos del perfil de la sesión activa en el formulario.
 if (EssencialAuth.exigirSesion()) {
 
     document.getElementById("contenidoPerfil").hidden = false;
@@ -16,6 +21,7 @@ if (EssencialAuth.exigirSesion()) {
     document.getElementById("perfilEmail").value = perfil.email || "";
     document.getElementById("perfilDireccion").value = perfil.direccion || "";
 
+    // Valida nombre, apellido y correo antes de guardar el perfil.
     document.getElementById("formPerfil").addEventListener(
         "submit",
         function (event) {

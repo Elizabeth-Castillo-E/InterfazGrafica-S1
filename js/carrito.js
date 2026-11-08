@@ -1,3 +1,7 @@
+/* Módulo de Carrito: exige rol CLIENTE, consulta precios actuales y muestra líneas y totales; permite quitar productos.
+ * Al confirmar valida stock de la sucursal, descuenta unidades, registra el pedido y vacía el carrito.
+ * El pago es simulado y no procesa cobros.
+ */
 
 /* CARRITO Y COMPRA SIMULADA */
 
@@ -6,7 +10,6 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
     document.getElementById("contenidoCarrito").hidden = false;
 
     const CLAVE_CARRITO = "essencial_carrito";
-    const CLAVE_PEDIDOS = "essencial_pedidos";
 
     const tabla = document.getElementById("tablaCarrito");
     const precioOriginalElemento = document.getElementById("precioOriginalCarrito");
@@ -39,10 +42,12 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
         }).format(numero);
     }
 
+    // Multiplica el precio final por la cantidad para el resumen y el pedido.
     function calcularSubtotal(producto, cantidad) {
         return EssencialDatos.calcularPrecioFinal(producto) * cantidad;
     }
 
+    // Muestra las líneas del carrito y calcula el precio original, el descuento y el total.
     function mostrarCarrito() {
         tabla.replaceChildren();
 
@@ -92,6 +97,7 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
             carrito.length === 0;
     }
 
+    // Valida el stock de la sucursal y registra el pedido de demostración.
     document.getElementById("confirmarCompra")
         .addEventListener("click", () => {
 
@@ -139,24 +145,27 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
                 );
             });
 
-            // Historial ficticio de la compra.
-            const pedidos = JSON.parse(
-                localStorage.getItem(CLAVE_PEDIDOS) || "[]"
-            );
-
-            pedidos.push({
+            // Guarda identidad y precios de esta compra para conservar el detalle histórico.
+            const sesion = EssencialAuth.obtenerSesion();
+            EssencialDatos.guardarPedido({
                 id: Date.now(),
-                usuario: EssencialAuth.obtenerSesion().usuario,
+                usuario: sesion.usuario,
+                nombreCliente: sesion.nombre,
+                emailCliente: sesion.email,
                 fecha: new Date().toISOString(),
                 sucursal,
                 total,
-                productos: carrito
+                productos: detalles.map(({ producto, cantidad }) => ({
+                    id: producto.id,
+                    nombre: producto.nombre,
+                    codigo: producto.codigo,
+                    cantidad,
+                    precioOriginal: producto.precio,
+                    descuento: producto.descuento,
+                    precioUnitario: EssencialDatos.calcularPrecioFinal(producto),
+                    subtotal: calcularSubtotal(producto, cantidad)
+                }))
             });
-
-            localStorage.setItem(
-                CLAVE_PEDIDOS,
-                JSON.stringify(pedidos)
-            );
 
             guardarCarrito([]);
             mostrarCarrito();

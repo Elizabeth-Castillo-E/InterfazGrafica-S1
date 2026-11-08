@@ -1,3 +1,6 @@
+/* Módulo de Registro público: obtiene los campos, valida RUT, edad mínima de 13 años, identidad, correo y contraseña.
+ * Envía los datos a EssencialAuth, abre la sesión del cliente y permite limpiar el formulario.
+ */
 //1. buscamos el DOM los elementos que necesitamos
 
 console.log("JavaScript cargado correctamente");
@@ -14,6 +17,7 @@ const direccionInput = document.getElementById("direccion");
 const mensajeRegistro = document.getElementById("mensajeRegistro");
 
 //2. creamos funciones de validación para cada campo
+// Verifica el formato del RUT y calcula el dígito verificador por módulo 11.
 function validaRut(rut) {// función para validar el RUT chileno sacada absolutamente de internet, no es mía
 
   // Eliminar puntos y guion
@@ -63,6 +67,7 @@ function validaRut(rut) {// función para validar el RUT chileno sacada absoluta
   return dv === dvCalculado;
 }
 
+// Comprueba que la fecha sea válida y que la persona tenga al menos 13 años.
 function validaFechaNacimiento(fechaNacimiento) {
   if (!fechaNacimiento) {
     return false;
@@ -104,6 +109,7 @@ function validaEmail(email) {
   
   return regex.test(email.trim());
 }
+// Exige entre 6 y 18 caracteres, una mayúscula, un número y un carácter especial.
 function validaPassword(password) {
   const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9\s])\S{6,18}$/;
   return regex.test(password.trim());
@@ -122,6 +128,7 @@ function mostrarError(input, mensaje) {
   errorElement.style.display = "block";
 }
 
+// Valida los campos del registro antes de crear el perfil de cliente.
 //3. agregamos un evento al formulario para validar los datos antes de enviarlos
 formulario.addEventListener("submit", function (event) {
   event.preventDefault(); // Evita que el formulario se envíe automáticamente
@@ -184,6 +191,7 @@ formulario.addEventListener("submit", function (event) {
     nombre: nombre,
     apellido: apellido,
     email: email,
+    password: passwordInput.value.trim(),
     direccion: direccionInput.value.trim()
 });
 

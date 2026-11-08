@@ -1,8 +1,12 @@
+/* Módulo de Catálogo: filtra EssencialDatos según data-categoria y construye tarjetas con imagen, precio, descuento y stock.
+ * EssencialAuth permite agregar al carrito al cliente; repetir un producto incrementa su cantidad local.
+ */
 
 /* CATÁLOGO DINÁMICO */
 
 const contenedorCatalogo = document.getElementById("catalogoDinamico");
 
+// Muestra productos de la categoría activa con su precio y stock por sucursal.
 if (contenedorCatalogo) {
 
     const categoria = contenedorCatalogo.dataset.categoria;
@@ -92,6 +96,7 @@ if (contenedorCatalogo) {
     });
 }
 
+// Guarda el producto en el carrito o incrementa la cantidad si ya está agregado.
 function agregarAlCarrito(id) {
     const carrito = JSON.parse(
         localStorage.getItem("essencial_carrito") || "[]"
