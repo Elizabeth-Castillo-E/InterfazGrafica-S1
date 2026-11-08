@@ -5,6 +5,61 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
     document.getElementById("contenidoAdmin").hidden = false;
 
     const formulario = document.getElementById("formProducto");
+
+    const archivoImagen = document.getElementById("archivoImagen");
+    const imagenProducto = document.getElementById("imagenProducto");
+    const vistaPrevia = document.getElementById("vistaPreviaImagen");
+    const errorImagen = document.getElementById("errorImagen");
+
+    archivoImagen.addEventListener("change", function () {
+        const archivo = this.files[0];
+
+        if (!archivo) return;
+
+        const tiposPermitidos = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!tiposPermitidos.includes(archivo.type)) {
+            errorImagen.textContent =
+                "Selecciona una imagen JPG, PNG o WebP.";
+            this.value = "";
+            return;
+        }
+
+        if (archivo.size > 300 * 1024) {
+            errorImagen.textContent =
+                "La imagen supera los 300 KB. " +
+                "Utiliza una imagen más pequeña.";
+            this.value = "";
+            return;
+        }
+
+        errorImagen.textContent = "";
+
+        const lector = new FileReader();
+
+        lector.onload = function (evento) {
+            if (archivoImagen.files[0] !== archivo) return;
+
+            imagenProducto.value = evento.target.result;
+
+            vistaPrevia.src = evento.target.result;
+            vistaPrevia.classList.remove("d-none");
+        };
+
+        lector.onerror = function () {
+            if (archivoImagen.files[0] !== archivo) return;
+
+            errorImagen.textContent =
+                "No fue posible leer la imagen seleccionada.";
+        };
+
+        lector.readAsDataURL(archivo);
+    });
+
     const tabla = document.getElementById("tablaProductos");
     const mensaje = document.getElementById("mensajeAdmin");
 
@@ -79,6 +134,11 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
         campo("precioProducto").value = p.precio;
         campo("descuentoProducto").value = p.descuento;
         campo("imagenProducto").value = p.imagen;
+        vistaPrevia.src = p.imagen;
+        vistaPrevia.classList.remove("d-none");
+
+        archivoImagen.value = "";
+        errorImagen.textContent = "";
         campo("stockChillan").value = p.stock.chillan;
         campo("stockConcepcion").value = p.stock.concepcion;
         campo("stockSantiago").value = p.stock.santiago;
@@ -96,9 +156,14 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
             "precioProducto", "descuentoProducto",
             "stockChillan", "stockConcepcion", "stockSantiago"
         ];
-
         let valido = true;
-
+        if (!imagenProducto.value.trim()) {
+            errorImagen.textContent =
+                "Debes seleccionar una imagen del producto.";
+            valido = false;
+        } else {
+            errorImagen.textContent = "";
+        }
         camposObligatorios.forEach(id => {
             const elemento = campo(id);
             const correcto = elemento.checkValidity() &&
@@ -146,17 +211,17 @@ if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
 
         EssencialDatos.guardarProducto(producto);
         formulario.reset();
-        campo("productoId").value = "";
-        campo("tituloFormulario").textContent = "Agregar producto";
-
-        formulario.querySelectorAll(".is-valid, .is-invalid")
-            .forEach(el => el.classList.remove("is-valid", "is-invalid"));
 
         mostrarProductos();
         mostrarMensaje("Producto guardado correctamente.");
     });
 
     formulario.addEventListener("reset", () => {
+        archivoImagen.value = "";
+        imagenProducto.value = "";
+        vistaPrevia.removeAttribute("src");
+        vistaPrevia.classList.add("d-none");
+        errorImagen.textContent = "";
         campo("productoId").value = "";
         campo("tituloFormulario").textContent = "Agregar producto";
         formulario.querySelectorAll(".is-valid, .is-invalid")

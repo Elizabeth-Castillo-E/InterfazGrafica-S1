@@ -9,6 +9,8 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
     const CLAVE_PEDIDOS = "essencial_pedidos";
 
     const tabla = document.getElementById("tablaCarrito");
+    const precioOriginalElemento = document.getElementById("precioOriginalCarrito");
+    const descuentoElemento = document.getElementById("descuentoCarrito");
     const totalElemento = document.getElementById("totalCarrito");
     const mensaje = document.getElementById("mensajeCompra");
 
@@ -37,9 +39,14 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
         }).format(numero);
     }
 
+    function calcularSubtotal(producto, cantidad) {
+        return EssencialDatos.calcularPrecioFinal(producto) * cantidad;
+    }
+
     function mostrarCarrito() {
         tabla.replaceChildren();
 
+        let precioOriginal = 0;
         let total = 0;
         const carrito = obtenerCarrito();
 
@@ -47,9 +54,9 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
             const producto = EssencialDatos.buscarProducto(item.id);
             if (!producto) return;
 
-            const subtotal = producto.precio * item.cantidad;
+            const subtotal = calcularSubtotal(producto, item.cantidad);
+            precioOriginal += producto.precio * item.cantidad;
             total += subtotal;
-
             const fila = document.createElement("tr");
 
             const nombre = document.createElement("td");
@@ -78,6 +85,8 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
             tabla.appendChild(fila);
         });
 
+        precioOriginalElemento.textContent = precioCLP(precioOriginal);
+        descuentoElemento.textContent = precioCLP(total - precioOriginal);
         totalElemento.textContent = precioCLP(total);
         document.getElementById("confirmarCompra").disabled =
             carrito.length === 0;
@@ -114,8 +123,7 @@ if (EssencialAuth.exigirRol("CLIENTE")) {
             }
 
             const total = detalles.reduce(
-                (suma, item) =>
-                    suma + item.producto.precio * item.cantidad,
+                (suma, item) => suma + calcularSubtotal(item.producto, item.cantidad),
                 0
             );
 

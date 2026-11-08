@@ -40,7 +40,12 @@ const EssencialDatos = (() => {
             stock: { chillan: 6, concepcion: 2, santiago: 4 }
         }
     ];
-
+function calcularPrecioFinal(producto) {
+    return Math.round(
+        producto.precio *
+        (1 - producto.descuento / 100)
+    );
+}
     function iniciar() {
         if (localStorage.getItem(CLAVE) === null) {
             guardar(productosIniciales);
@@ -112,6 +117,7 @@ const EssencialDatos = (() => {
         buscarProducto,
         guardarProducto,
         eliminarProducto,
-        actualizarStock
+        actualizarStock,
+        calcularPrecioFinal
     };
 })();

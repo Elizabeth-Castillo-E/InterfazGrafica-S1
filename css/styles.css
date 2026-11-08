@@ -321,6 +321,29 @@ img {
 .producto .precio {
     margin-top: auto;
 }
+/* Contenedor de precios */
+.contenedor-precios {
+    margin-top: auto;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Precio original tachado */
+.precio-anterior {
+    display: block;
+    font-size: 17px;
+    color: var(--gris-texto);
+    text-decoration: line-through;
+    margin-bottom: 5px;
+}
+
+/* Precio final */
+.contenedor-precios .precio {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--rojo);
+    margin: 0;
+}
 
 /* Etiqueta de descuento */
 .descuento {

@@ -44,15 +44,25 @@ if (contenedorCatalogo) {
 
         const precio = document.createElement("p");
         precio.className = "precio";
-        precio.textContent = precioCLP(p.precio);
+        precio.textContent = precioCLP(EssencialDatos.calcularPrecioFinal(p));
 
-        tarjeta.append(imagen, titulo, descripcion, precio);
+        tarjeta.append(imagen, titulo, descripcion);
 
         if (p.descuento > 0) {
+            const precios = document.createElement("div");
+            precios.className = "contenedor-precios";
+
+            const precioAnterior = document.createElement("del");
+            precioAnterior.className = "precio-anterior";
+            precioAnterior.textContent = precioCLP(p.precio);
+            precios.append(precioAnterior, precio);
+
             const descuento = document.createElement("span");
             descuento.className = "descuento";
             descuento.textContent = `${p.descuento}% de descuento`;
-            tarjeta.appendChild(descuento);
+            tarjeta.append(precios, descuento);
+        } else {
+            tarjeta.appendChild(precio);
         }
 
         const stock = document.createElement("p");

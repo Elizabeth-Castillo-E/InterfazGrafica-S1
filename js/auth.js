@@ -153,61 +153,88 @@ const EssencialAuth = (() => {
         return true;
     }
 
-    function actualizarSesionMenu() {
-        const menu = document.querySelector(".menu");
-        if (!menu) return;
+    
+function actualizarSesionMenu() {
+    const menu = document.querySelector(".menu");
 
-        const sesion = obtenerSesion();
+    if (!menu) return;
 
-        // Sustituye los enlaces de sesión anteriores.
-        menu.querySelectorAll("[data-sesion]").forEach(
-            elemento => elemento.remove()
+    const sesion = obtenerSesion();
+
+    // Eliminar enlaces dinámicos anteriores.
+    menu.querySelectorAll("[data-sesion]").forEach(
+        elemento => elemento.remove()
+    );
+
+    // Evitar enlaces de sesión duplicados.
+    [
+        "login.html",
+        "registroUsuario.html",
+        "admin.html",
+        "perfil.html",
+        "carrito.html"
+    ].forEach(ruta => {
+        menu.querySelectorAll(`a[href="${ruta}"]`).forEach(
+            enlace => enlace.remove()
         );
+    });
 
-        if (sesion) {
-            menu.querySelectorAll('a[href="login.html"], a[href="registroUsuario.html"]')
-                .forEach(elemento => elemento.remove());
+    function agregarEnlace(texto, ruta) {
+        const enlace = document.createElement("a");
 
-            const enlace = document.createElement("a");
-            enlace.href = sesion.rol === "ADMINISTRADOR"
-                ? "admin.html" : "carrito.html";
-            enlace.textContent = sesion.rol === "ADMINISTRADOR"
-                ? "Administración" : "Mi carrito";
-            enlace.dataset.sesion = "true";
-            menu.appendChild(enlace);
+        enlace.href = ruta;
+        enlace.textContent = texto;
+        enlace.dataset.sesion = "true";
 
-            const perfil = document.createElement("a");
-            perfil.href = "perfil.html";
-            perfil.textContent = "Mi perfil";
-            perfil.dataset.sesion = "true";
-            menu.appendChild(perfil);
-
-            const salir = document.createElement("button");
-            salir.type = "button";
-            salir.textContent = "Cerrar sesión";
-            salir.className = "btn btn-outline-light btn-sm";
-            salir.dataset.sesion = "true";
-            salir.addEventListener("click", cerrarSesion);
-            menu.appendChild(salir);
-
-        } else {
-            if (!menu.querySelector('a[href="login.html"]')) {
-                const login = document.createElement("a");
-                login.href = "login.html";
-                login.textContent = "Iniciar sesión";
-                login.dataset.sesion = "true";
-                menu.appendChild(login);
-            }
-
-            if (!menu.querySelector('a[href="registroUsuario.html"]')) {
-                const registro = document.createElement("a");
-                registro.href = "registroUsuario.html";
-                registro.textContent = "Registrarse";
-                registro.dataset.sesion = "true";
-                menu.appendChild(registro);
-            }
-        }
+        menu.appendChild(enlace);
     }
+
+    if (!sesion) {
+        agregarEnlace("Iniciar sesión", "login.html");
+        agregarEnlace("Registrarse", "registroUsuario.html");
+    } else {
+        if (sesion.rol === "ADMINISTRADOR") {
+            agregarEnlace("Administración", "admin.html");
+        }
+
+        if (sesion.rol === "CLIENTE") {
+            agregarEnlace("Mi carrito", "carrito.html");
+        }
+
+        agregarEnlace("Mi perfil", "perfil.html");
+
+        const salir = document.createElement("button");
+        salir.type = "button";
+        salir.textContent = "Cerrar sesión";
+        salir.className = "btn btn-outline-light btn-sm";
+        salir.dataset.sesion = "true";
+
+        salir.addEventListener("click", cerrarSesion);
+
+        menu.appendChild(salir);
+    }
+
+    // Resaltar la página actual.
+    const paginaActual =
+        window.location.pathname.split("/").pop() || "index.html";
+
+    menu.querySelectorAll("a").forEach(enlace => {
+        enlace.removeAttribute("aria-current");
+
+        const url = new URL(enlace.href);
+        const paginaEnlace =
+            url.pathname.split("/").pop() || "index.html";
+
+        if (
+            paginaEnlace === paginaActual &&
+            !url.hash &&
+            enlace.getAttribute("href") !== "index.html#categorias"
+        ) {
+            enlace.setAttribute("aria-current", "page");
+        }
+    });
+}
+
 
     document.addEventListener(
         "DOMContentLoaded",
