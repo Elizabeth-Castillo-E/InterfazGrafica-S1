@@ -1,7 +1,7 @@
 /* Módulo de compras de clientes: historial general exclusivo del administrador.
  * Consulta EssencialDatos, filtra por usuario y ordena por fecha descendente.
  * Muestra el comprador, sucursal, total y detalle desplegable con precios históricos.
- * Actualizar vuelve a leer el almacenamiento local; no realiza peticiones a un servidor.
+ * Actualizar vuelve a leer el almacenamiento local.
  */
 if (EssencialAuth.exigirRol("ADMINISTRADOR")) {
     const filtro = document.getElementById("clienteComprasAdmin");
